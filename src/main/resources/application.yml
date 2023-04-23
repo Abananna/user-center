@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: user-center
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/kaka?serverTimezone=UTC
+    username: root
+    password: Ybmq.785679
+server:
+  port: 8080
