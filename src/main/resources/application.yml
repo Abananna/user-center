@@ -8,3 +8,7 @@ spring:
     password: Ybmq.785679
 server:
   port: 8080
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false

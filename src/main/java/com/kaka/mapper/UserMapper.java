@@ -1,18 +1,20 @@
-package com.kaka.mapper;/**
- * @author kkstart
- * @create 2023-04-23 22:16
- */
+package com.kaka.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.kaka.model.pojo.User;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * @Author:Kaka
- * @Description:
- * @Date: 2023/4/23 22:16
- */
+* @author qiaziwei
+* @description 针对表【user(用户)】的数据库操作Mapper
+* @createDate 2023-04-24 09:35:19
+* @Entity com.kaka.model.pojo.User
+*/
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
 
 }
+
+
+
+
