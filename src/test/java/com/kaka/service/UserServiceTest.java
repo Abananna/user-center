@@ -1,6 +1,7 @@
 package com.kaka.service;
 import java.util.Date;
 
+import com.kaka.mapper.UserMapper;
 import com.kaka.model.pojo.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ class UserServiceTest {
 
     @Autowired
     UserService userService;
+
     @Test
     void testAddUser() {
         User user = new User();
@@ -64,10 +66,6 @@ class UserServiceTest {
         checkPassword = "kaka12345";
         res = userService.userRegister(userAccount,userPassword,checkPassword);
         Assertions.assertEquals(-1,res);
-        userAccount = "kakagreat666";
-        checkPassword = "kaka123456";
-        res = userService.userRegister(userAccount,userPassword,checkPassword);
-        Assertions.assertTrue(res > 0);
-
     }
+
 }

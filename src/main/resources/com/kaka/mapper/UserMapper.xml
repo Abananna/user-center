@@ -29,4 +29,7 @@
         createTime,updateTime,isDelete,
         userRole,planetCode,tags
     </sql>
+    <select id="selectByUsernameAndPassword" resultType="com.kaka.model.pojo.User">
+        select <include refid="Base_Column_List"/> from user where userAccount= #{userAccount} and userPassword=#{userPassword}
+    </select>
 </mapper>
