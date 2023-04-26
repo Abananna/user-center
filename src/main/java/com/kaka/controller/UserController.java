@@ -4,6 +4,10 @@ package com.kaka.controller;/**
  */
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.kaka.common.BaseResponse;
+import com.kaka.common.ErrorCode;
+import com.kaka.common.ResultUtils;
+import com.kaka.exception.BusinessException;
 import com.kaka.model.pojo.User;
 import com.kaka.model.request.UserLoginRequest;
 import com.kaka.model.request.UserRegisterRequest;
@@ -33,61 +37,87 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public Long userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
+    public BaseResponse<Long> userRegister(@RequestBody UserRegisterRequest userRegisterRequest) {
         if (userRegisterRequest == null) {
-            return null;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         String userAccount = userRegisterRequest.getUserAccount();
         String userPassword = userRegisterRequest.getUserPassword();
         String checkPassword = userRegisterRequest.getCheckPassword();
-        if (StringUtils.isAllBlank(userAccount, userPassword, checkPassword)) {
-            return null;
+        String planetCode = userRegisterRequest.getPlanetCode();
+        if (StringUtils.isAllBlank(userAccount, userPassword, checkPassword, planetCode)) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR ,"请求参数中存在空值");
         }
-        return userService.userRegister(userAccount, userPassword, checkPassword);
+        long res = userService.userRegister(userAccount, userPassword, checkPassword, planetCode);
+        return ResultUtils.ok(res);
     }
 
     @PostMapping("/login")
-    public User userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
+    public BaseResponse<User> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
         if (userLoginRequest == null) {
-            return null;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         String userAccount = userLoginRequest.getUserAccount();
         String userPassword = userLoginRequest.getUserPassword();
         if (StringUtils.isAllBlank(userAccount, userPassword)) {
-            return null;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "请求参数中存在空值");
         }
-        return userService.userLogin(userAccount, userPassword, request);
+        User user = userService.userLogin(userAccount, userPassword, request);
+        return ResultUtils.ok(user);
     }
 
+    @PostMapping("/logout")
+    public BaseResponse<Integer> userLogout(HttpServletRequest request) {
+        if (request == null) {
+            throw new BusinessException(ErrorCode.NULL_ERROR);
+        }
+        int res = userService.userLogout(request);
+        return ResultUtils.ok(res);
+    }
+
+    @GetMapping("/current")
+    public BaseResponse<User> getCurrentUser(HttpServletRequest request) {
+        User curUser = (User) request.getSession().getAttribute(USER_LOGIN_STATE);
+        if (curUser == null) {
+            throw new BusinessException(ErrorCode.NO_AUTH, "用户未登录");
+        }
+        //用户信息在session存活期间变化 所以获取确认存活后再查询一遍
+        User user = userService.getById(curUser.getId());
+        User safeUser = userService.getSafeUser(user);
+        return ResultUtils.ok(safeUser);
+    }
     @GetMapping("/search")
-    public List<User> userList(String username, HttpServletRequest request) {
+    public BaseResponse<List<User>> userList(String username, HttpServletRequest request) {
         //仅管理员可查询
         if (!isAdmin(request)) {
-            return new ArrayList<>();
+            throw new BusinessException(ErrorCode.NO_AUTH, "只允许管理员操作");
         }
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         if (StringUtils.isNotBlank(username)) {
             queryWrapper.like("username", username);
         }
+        //可选择针对字段查询,重新写一条sql语句
         List<User> userList = userService.list(queryWrapper);
         //脱敏
-        return userList.stream().map(user->{
+        List<User> safeUserList = userList.stream().map(user -> {
             user.setUserPassword(null);
             return userService.getSafeUser(user);
         }).collect(Collectors.toList());
 
+        return ResultUtils.ok(safeUserList);
     }
 
     @DeleteMapping("{id}")
-    public boolean deleteUser(@PathVariable Long id,  HttpServletRequest request) {
+    public BaseResponse<Boolean> deleteUser(@PathVariable Long id,  HttpServletRequest request) {
         //仅管理员可删除
         if (!isAdmin(request)) {
-            return false;
+            throw new BusinessException(ErrorCode.NO_AUTH, "只允许管理员操作");
         }
         if (id <= 0) {
-            return false;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "id不存在");
         }
-        return userService.removeById(id);
+        boolean res = userService.removeById(id);
+        return ResultUtils.ok(res);
     }
 
     /**

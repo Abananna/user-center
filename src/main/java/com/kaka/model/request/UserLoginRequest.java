@@ -1,7 +1,4 @@
-package com.kaka.model.request;/**
- * @author kkstart
- * @create 2023-04-24 14:27
- */
+package com.kaka.model.request;
 
 import lombok.Data;
 

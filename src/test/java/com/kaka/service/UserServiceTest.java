@@ -1,4 +1,5 @@
 package com.kaka.service;
+
 import java.util.Date;
 
 import com.kaka.mapper.UserMapper;
@@ -44,28 +45,29 @@ class UserServiceTest {
         String userAccount = "";
         String userPassword = "kaka123456";
         String checkPassword = "kaka123456";
+        String planetCode = "1";
 //        校验用户账户和密码是否合法
 //        1. 非空
-        long res = userService.userRegister(userAccount, userPassword, checkPassword);
-        Assertions.assertEquals(-1,res);
+        long res = userService.userRegister(userAccount, userPassword, checkPassword, planetCode);
+        Assertions.assertEquals(-1, res);
 //        2. 账户长度不小于 6 位
         userAccount = "abcd";
-        res = userService.userRegister(userAccount, userPassword, checkPassword);
-        Assertions.assertEquals(-1,res);
+        res = userService.userRegister(userAccount, userPassword, checkPassword, planetCode);
+        Assertions.assertEquals(-1, res);
 //        3. 密码长度不小于 8 位
         userPassword = "1234";
-        res = userService.userRegister(userAccount, userPassword, checkPassword);
-        Assertions.assertEquals(-1,res);
+        res = userService.userRegister(userAccount, userPassword, checkPassword, planetCode);
+        Assertions.assertEquals(-1, res);
 //        4. 账户不包含特殊字符
         userPassword = "kaka123456";
         userAccount = "ascd adsd";
-        res = userService.userRegister(userAccount, userPassword, checkPassword);
-        Assertions.assertEquals(-1,res);
+        res = userService.userRegister(userAccount, userPassword, checkPassword, planetCode);
+        Assertions.assertEquals(-1, res);
         // 5.两次密码不同
         userAccount = "kakagreat";
         checkPassword = "kaka12345";
-        res = userService.userRegister(userAccount,userPassword,checkPassword);
-        Assertions.assertEquals(-1,res);
+        res = userService.userRegister(userAccount, userPassword, checkPassword, planetCode);
+        Assertions.assertEquals(-1, res);
     }
 
 }

@@ -1,7 +1,4 @@
-package com.kaka.model.request;/**
- * @author kkstart
- * @create 2023-04-24 14:16
- */
+package com.kaka.model.request;
 
 import lombok.Data;
 
@@ -20,5 +17,6 @@ public class UserRegisterRequest implements Serializable {
     private String userAccount;
     private String userPassword;
     private String checkPassword;
+    private String planetCode;
 
 }
