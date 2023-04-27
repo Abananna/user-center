@@ -65,6 +65,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if (!userPassword.equals(checkPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"两次密码不同");
         }
+        //星球编号不能过长
+        if (planetCode.length() > 7) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "星球编号过长");
+        }
         //账户不能重复
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userAccount", userAccount);

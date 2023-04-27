@@ -1,11 +1,13 @@
 spring:
   application:
     name: user-center
+  #Datasource Config
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/kaka?serverTimezone=UTC
     username: root
     password: Ybmq.785679
+  #失效时间
   session:
     timeout: 86400
 server:

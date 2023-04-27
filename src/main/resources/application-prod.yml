@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost/user_center?serverTimezone=UTC
+    username: root
+    password: Mysql785679
+  session:
+    timeout: 86400
+
+
