@@ -126,12 +126,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
 
         // 2. 查询用户是否存在
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userAccount",userAccount);
+        User isExist = userMapper.selectOne(queryWrapper);
+        if (isExist == null) {
+            throw new BusinessException(ErrorCode.NO_USER, "用户账号不存在");
+        }
+        //查询账号密码是否匹配
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
 
         User user = userMapper.selectByUsernameAndPassword(userAccount,encryptPassword);
         if (user == null) {
             log.info("user logging failed , userAccount can't match userPassword");
-            throw new BusinessException(ErrorCode.NO_USER);
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"账号密码不匹配");
         }
 
         // 3. 用户信息脱敏
