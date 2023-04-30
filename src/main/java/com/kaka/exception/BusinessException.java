@@ -7,7 +7,7 @@ import com.kaka.common.ErrorCode;
  * 自定义异常类
  */
 public class BusinessException extends RuntimeException {
-
+    static final long serialVersionUID = -2012897190745766939L;
     private final int code;
     private final String description;
 

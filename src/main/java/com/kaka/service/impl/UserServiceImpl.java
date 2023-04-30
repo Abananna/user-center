@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.kaka.constant.UserConstant.DEFAULT_AVATAR;
 import static com.kaka.constant.UserConstant.USER_LOGIN_STATE;
 
 /**
@@ -91,6 +92,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         user.setUserAccount(userAccount);
         user.setUserPassword(encryptPassword);
         user.setPlanetCode(planetCode);
+        user.setAvatarUrl(DEFAULT_AVATAR);
         //向数据库添加数据
         boolean saveRes = this.save(user);
         if (!saveRes) {

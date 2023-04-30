@@ -10,6 +10,10 @@ public interface UserConstant {
      */
     String USER_LOGIN_STATE = "userLoginState";
 
+    /**
+     * 用户默认头像
+     */
+    String DEFAULT_AVATAR = "https://abananna.oss-cn-beijing.aliyuncs.com/img/user-center/avatar001.jpeg";
     // ----权限
     /**
      * 管理员权限

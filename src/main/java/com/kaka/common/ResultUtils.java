@@ -1,7 +1,7 @@
 package com.kaka.common;
 
 /**
- * 返回结果类
+ * 返回结果工具类
  * @author kaka
  */
 public class ResultUtils {
